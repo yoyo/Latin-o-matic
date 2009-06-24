@@ -1,0 +1,8 @@
+femin,F,FIRST,woman
+puell,F,FIRST,girl
+regin,F,FIRST,queen
+naut,M,FIRST,sailor
+puer,puer,M,SECOND,boy
+rex,reg,M,THIRD,king
+vulnus,vulner,N,THIRD,wound
+sp,F,FIFTH,hope

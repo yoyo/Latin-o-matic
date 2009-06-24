@@ -1,0 +1,7 @@
+am,amav,amat,FIRST,love
+voc,vocav,vocat,FIRST,call
+mane,mans,mans,SECOND,stay
+mone,monu,monit,SECOND,warn
+duc,dux,duct,THIRD,lead
+scrib,scrips,script,THIRD,write
+audi,audiv,audit,FOURTH,hear
