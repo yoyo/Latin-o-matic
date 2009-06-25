@@ -1,5 +1,8 @@
 package latinomatic.latin.verb;
 
+import latinomatic.Number;
+import latinomatic.Person;
+import latinomatic.Tense;
 import latinomatic.latin.Word;
 
 public class Verb extends Word {
@@ -15,5 +18,21 @@ public class Verb extends Word {
 	
 	public String toString() {
 		return "(\"" + word + "\"->\"" + engInf +"\", " + String.valueOf(ending) + ")";
+	}
+
+	public Number getNumber() {
+		return ending.getNumber();
+	}
+	
+	public String getMeaning() {
+		return engInf;
+	}
+
+	public Person getPerson() {
+		return ending.getPerson();
+	}
+
+	public Tense getTense() {
+		return ending.getTense();
 	}
 }

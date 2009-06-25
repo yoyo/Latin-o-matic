@@ -3,8 +3,10 @@ package latinomatic;
 import java.util.ArrayList;
 
 import latinomatic.english.noun.EngNoun;
+import latinomatic.english.verb.EngVerb;
 import latinomatic.latin.WordCollection;
 import latinomatic.latin.noun.Noun;
+import latinomatic.latin.verb.Verb;
 import latinomatic.Number;
 
 public class Sentence {
@@ -20,13 +22,19 @@ public class Sentence {
 	}
 	
 	public String translate() {
-		trans();
+		PartiallyTranslated master = new PartiallyTranslated();
+		master.trans();
 		
-		return null;
+		// TODO: Later it will return every possible translation
+		String s = master.result;
+		while (master.sub != null) {
+			s += master.sub.get(0).result;
+			master = master.sub.get(0);
+		}
+		return s;
 	}
 	
 	public class PartiallyTranslated {
-		//Perhaps a HashSet could be used instead...
 		private ArrayList<WordCollection> translated;
 		private String result;
 		
@@ -46,67 +54,86 @@ public class Sentence {
 			sup = superPT;
 		}
 		
-		public ArrayList<WordCollection> getUntranslated() {
+		private ArrayList<WordCollection> getUntranslated() {
 			ArrayList<WordCollection> all = (ArrayList<WordCollection>) words.clone();
 			all.removeAll(translated);
 			
 			PartiallyTranslated s = sup;
 			while (s != null) {
 				all.removeAll(s.translated);
+				s = s.sup;
 			}
 			return all;
 		}
 		
 		
-		private boolean trans() {
-			singSubject(); singVerb(); object();
-				for (int i = 0; i < sub.size(); i++){
-					sub.get(i).mainTransitiveVerb(singOrPlural.get(i));
-					
-					if (object())
-						return true;
+		public boolean trans() {
+			if (singSubject()) {
+				for (PartiallyTranslated pt : sub) {
+					pt.singVerb();
 				}
 			}
-			return false;
-		}
-		
-		private boolean mainTransitiveVerb(Number n) {
 			
 			return false;
 		}
 
+		private boolean singVerb() {
+			ArrayList<WordCollection> possVerbs = new ArrayList<WordCollection>();
+			ArrayList<Verb> singVerbs = new ArrayList<Verb>();
+		
+			for (WordCollection word : getUntranslated()) {
+				Verb verb = word.possiblyVerb();
+				if (verb != null && verb.getNumber() == Number.SING) {
+					singVerbs.add(verb);
+					possVerbs.add(word);
+				}
+			}
+			
+			if (possVerbs.size() >= 1) {
+				sub = new ArrayList<PartiallyTranslated>();
+				for (int i = 0; i < possVerbs.size(); i++) {
+					ArrayList<WordCollection> arr = new ArrayList<WordCollection>();
+					arr.add(possVerbs.get(i));
+					PartiallyTranslated subPT = new PartiallyTranslated(arr,this);
+					subPT.result += " " + EngVerb.translate(singVerbs.get(i));
+					sub.add(subPT);					
+				}
+				return true;
+			} else {
+				return false;
+			}
+			
+		}
+
 		private boolean singSubject() {
-			return nomSingNoun();		
+			return nomSingNoun();
 		}
 		
 		private boolean nomSingNoun() {
 			ArrayList<WordCollection> possNouns = new ArrayList<WordCollection>();
-			ArrayList<Noun> nomNouns = new ArrayList<Noun>();
+			ArrayList<Noun> nomSingNouns = new ArrayList<Noun>();
+		
 			for (WordCollection word : getUntranslated()) {
 				Noun nomNoun = word.possiblyNomNoun();
-				if (nomNoun != null) {
-					nomNouns.add(nomNoun);
+				if (nomNoun != null && nomNoun.getNumber() == Number.SING) {
+					nomSingNouns.add(nomNoun);
 					possNouns.add(word);
 				}
 			}
+			
 			if (possNouns.size() >= 1) {
-				ArrayList<Number> singOrPlural = new ArrayList<Number>();
-				
 				sub = new ArrayList<PartiallyTranslated>();
 				for (int i = 0; i < possNouns.size(); i++) {
 					ArrayList<WordCollection> arr = new ArrayList<WordCollection>();
 					arr.add(possNouns.get(i));
 					PartiallyTranslated subPT = new PartiallyTranslated(arr,this);
-					subPT.result += " " + EngNoun.transAsSubject(nomNouns.get(i));
-					sub.add(subPT);
-					
-					singOrPlural.add(nomNouns.get(i).getNumber());					
+					subPT.result += "The " + EngNoun.transAsSubject(nomSingNouns.get(i));
+					sub.add(subPT);					
 				}
-				return singOrPlural;
+				return true;
 			} else {
-				return null;
+				return false;
 			}
-			
 		}
 		
 	}

@@ -3,6 +3,7 @@ puell,F,FIRST,girl
 regin,F,FIRST,queen
 naut,M,FIRST,sailor
 puer,puer,M,SECOND,boy
+regn,N,SECOND,kingdom
 rex,reg,M,THIRD,king
 vulnus,vulner,N,THIRD,wound
 sp,F,FIFTH,hope

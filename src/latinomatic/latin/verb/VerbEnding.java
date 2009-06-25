@@ -33,4 +33,13 @@ public class VerbEnding {
 		return "Person: " + String.valueOf(person) + ", Number: " + String.valueOf(number) + ", Tense: " + String.valueOf(tense) + ", Voice: " + String.valueOf(voice) + ", Conjugation: " + String.valueOf(conj);
 	}
 
+	public Number getNumber() {
+		return number;
+	}
+
+	public Person getPerson() {
+		return person;
+	}
+
+
 }

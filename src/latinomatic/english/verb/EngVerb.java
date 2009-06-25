@@ -13,6 +13,7 @@ import latinomatic.Person;
 import latinomatic.Number;
 import latinomatic.Tense;
 import latinomatic.VerbForm;
+import latinomatic.latin.verb.Verb;
 
 public class EngVerb {
 	private static HashMap<String,String[]> verbTenses;
@@ -141,6 +142,10 @@ public class EngVerb {
 		if (tenses == null)
 			return null;
 		return tenses[11];
+	}
+
+	public static String translate(Verb verb) {
+		return changeForm(verb.getMeaning(),VerbForm.FINITE,verb.getPerson(),verb.getNumber(),verb.getTense());
 	}
 	
 	
