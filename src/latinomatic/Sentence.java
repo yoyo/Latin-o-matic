@@ -28,7 +28,7 @@ public class Sentence {
 		// TODO: Later it will return every possible translation
 		String s = master.result;
 		while (master.sub != null) {
-			s += master.sub.get(0).result;
+			s += " " + master.sub.get(0).result;
 			master = master.sub.get(0);
 		}
 		return s;
@@ -70,20 +70,55 @@ public class Sentence {
 		public boolean trans() {
 			if (singSubject()) {
 				for (PartiallyTranslated pt : sub) {
-					pt.singVerb();
+					if (pt.thirdSingVerb()) {
+						for (PartiallyTranslated subPT : pt.sub) {
+							subPT.directObj();
+						}
+					}
 				}
 			}
 			
 			return false;
 		}
 
-		private boolean singVerb() {
+		private boolean directObj() {
+			return accNoun();			
+		}
+
+		private boolean accNoun() {
+			ArrayList<WordCollection> possNouns = new ArrayList<WordCollection>();
+			ArrayList<Noun> accNouns = new ArrayList<Noun>();
+		
+			for (WordCollection word : getUntranslated()) {
+				Noun accNoun = word.possiblyAccNoun();
+				if (accNoun != null) {
+					accNouns.add(accNoun);
+					possNouns.add(word);
+				}
+			}
+			
+			if (possNouns.size() >= 1) {
+				sub = new ArrayList<PartiallyTranslated>();
+				for (int i = 0; i < possNouns.size(); i++) {
+					ArrayList<WordCollection> arr = new ArrayList<WordCollection>();
+					arr.add(possNouns.get(i));
+					PartiallyTranslated subPT = new PartiallyTranslated(arr,this);
+					subPT.result += EngNoun.transAsDirObj(accNouns.get(i));
+					sub.add(subPT);					
+				}
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		private boolean thirdSingVerb() {
 			ArrayList<WordCollection> possVerbs = new ArrayList<WordCollection>();
 			ArrayList<Verb> singVerbs = new ArrayList<Verb>();
 		
 			for (WordCollection word : getUntranslated()) {
 				Verb verb = word.possiblyVerb();
-				if (verb != null && verb.getNumber() == Number.SING) {
+				if (verb != null && verb.getNumber() == Number.SING && verb.getPerson() == Person.THIRD) {
 					singVerbs.add(verb);
 					possVerbs.add(word);
 				}
@@ -95,7 +130,7 @@ public class Sentence {
 					ArrayList<WordCollection> arr = new ArrayList<WordCollection>();
 					arr.add(possVerbs.get(i));
 					PartiallyTranslated subPT = new PartiallyTranslated(arr,this);
-					subPT.result += " " + EngVerb.translate(singVerbs.get(i));
+					subPT.result += EngVerb.translate(singVerbs.get(i));
 					sub.add(subPT);					
 				}
 				return true;
@@ -127,7 +162,7 @@ public class Sentence {
 					ArrayList<WordCollection> arr = new ArrayList<WordCollection>();
 					arr.add(possNouns.get(i));
 					PartiallyTranslated subPT = new PartiallyTranslated(arr,this);
-					subPT.result += "The " + EngNoun.transAsSubject(nomSingNouns.get(i));
+					subPT.result += EngNoun.transAsSubject(nomSingNouns.get(i));
 					sub.add(subPT);					
 				}
 				return true;

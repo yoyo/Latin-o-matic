@@ -54,7 +54,7 @@ public class WordCollection implements Iterable<Word> {
 	/* If this Word object has a nominitive noun in the noun set,
 	 * it returns that noun, otherwise it returns null.
 	 */
-	// TODO: Both of these next two methods should probably return sets
+	// TODO: The next methods should probably return sets
 	public Noun possiblyNomNoun() {
 		for (Noun n : possN) {
 			if (n.getCase() == Case.NOM)
@@ -66,6 +66,14 @@ public class WordCollection implements Iterable<Word> {
 	public Verb possiblyVerb() {
 		for (Verb v : possV) {
 			return v;
+		}
+		return null;
+	}
+
+	public Noun possiblyAccNoun() {
+		for (Noun n : possN) {
+			if (n.getCase() == Case.ACC)
+				return n;
 		}
 		return null;
 	}

@@ -59,7 +59,8 @@ public class VerbDict {
 		endings.put("is", new VerbEnding[] {
 			new VerbEnding(Tense.PRES,Conjugation.THIRD,Person.SECOND,Number.SING,Voice.ACTIVE)});
 		endings.put("it", new VerbEnding[] {
-			new VerbEnding(Tense.PRES,Conjugation.THIRD,Person.THIRD,Number.SING,Voice.ACTIVE)});
+			new VerbEnding(Tense.PRES,Conjugation.THIRD,Person.THIRD,Number.SING,Voice.ACTIVE),
+			new VerbEnding(Tense.PERF,null,Person.THIRD,Number.SING,Voice.ACTIVE)});
 		endings.put("imus", new VerbEnding[] {
 			new VerbEnding(Tense.PRES,Conjugation.THIRD,Person.FIRST,Number.PL,Voice.ACTIVE)});
 		endings.put("itis", new VerbEnding[] {
@@ -166,8 +167,9 @@ public class VerbDict {
 			new VerbEnding(Tense.PERF,null,Person.FIRST,Number.SING,Voice.ACTIVE)});
 		endings.put("isti", new VerbEnding[] {
 			new VerbEnding(Tense.PERF,null,Person.SECOND,Number.SING,Voice.ACTIVE)});
-		endings.put("it", new VerbEnding[] {
-			new VerbEnding(Tense.PERF,null,Person.THIRD,Number.SING,Voice.ACTIVE)});
+		// "it" is also a third conjugation ending
+		//endings.put("it", new VerbEnding[] {
+		//	new VerbEnding(Tense.PERF,null,Person.THIRD,Number.SING,Voice.ACTIVE)});
 		endings.put("imus", new VerbEnding[] {
 			new VerbEnding(Tense.PERF,null,Person.FIRST,Number.PL,Voice.ACTIVE)});
 		endings.put("istis", new VerbEnding[] {

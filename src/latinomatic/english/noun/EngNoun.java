@@ -13,9 +13,17 @@ public class EngNoun {
 
 	public static String transAsSubject(Noun noun) {
 		if (noun.isPlural()) {
-			return pluralize(noun.getMeaning());
+			return "The " + pluralize(noun.getMeaning());
 		} else {
-			return noun.getMeaning();
+			return "The " + noun.getMeaning();
+		}
+	}
+
+	public static String transAsDirObj(Noun noun) {
+		if (noun.isPlural()) {
+			return "the " + pluralize(noun.getMeaning());
+		} else {
+			return "the " + noun.getMeaning();
 		}
 	}
 }

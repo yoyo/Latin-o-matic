@@ -1,5 +1,6 @@
 am,amav,amat,FIRST,love
 voc,vocav,vocat,FIRST,call
+pugn,pugnav,pugnat,FIRST,fight
 mane,mans,mans,SECOND,stay
 mone,monu,monit,SECOND,warn
 duc,dux,duct,THIRD,lead
